@@ -45,6 +45,14 @@ public class App {
      */
 
 
+    public static int Calcular_saldo(int base_din, int total_recaudos, int total_retiros) {
+        final int base_final = 2000000;
+        if (base_din == base_final) {
+            return base_din + total_recaudos - total_retiros;
+        }
+        return -1;
+    }
+
     /*
      * 2. Diseñe un algoritmo e implemente la función Calcular_tip que reciba
      * un float representando el valor del consumo de un cliente, y devuelva
@@ -53,16 +61,28 @@ public class App {
      * 
      * MUY IMPORTANTE:
      * 
-     * El formato del string debe ser: valor comida: $### - valor propina $### -
+     * El formato del string debe ser: valor comida: $### - valor propina $### - 
      * valor impoconsumo $### - total a pagar $###.
      * 
      * Si hay algún error, retorne "Error en la función Calcular_tip".
      * 
-     * Ademas de esto, primero valide que el valor del consumo sea mayor a 0. Si no
-     * es así, retorne "Error calculando consumo".
-     * 
+     * Ademas de esto, primero valide que el valor del consumo sea mayor a 0. 
+     * Si no es así, retorne "Error calculando consumo".
      */
+    public static String Calcular_tip(float ConsClietn) {
 
+        float propina = ConsClietn * (float)0.10;
+        float Impoconsumo = ConsClietn * (float)0.08;
+        float total = ConsClietn + propina + Impoconsumo;
+        String txt = "valor comida: $"+ ConsClietn+ " - valor propina $"+ propina + " - valor impoconsumo $"+Impoconsumo+" - total a pagar $"+ total ;
+
+        if (ConsClietn <= 0) {
+            return "Error calculando consumo";
+        }
+        
+       return txt;     
+          
+    }
 
     /*
      * 3. Diseñe un algoritmo e implemente la función Obtener_puntos que reciba
@@ -74,18 +94,58 @@ public class App {
      * 
      * Valide ademas que los partidos ganados, perdidos y empatados sean mayores o
      * iguales a 0. Si no es así, retorne -1.
-     * 
      */
+    public static int Obtener_puntos(int partido_gan, int partido_perd, int partido_emp) {
+        final int min_partidos = 0;
+        final byte ptsxganar = 3;
+        final byte ptsxempatar = 1;
 
+        if (partido_gan < min_partidos || partido_perd < min_partidos || partido_emp < min_partidos) {
+            return -1;
+        }
+        return partido_gan * ptsxganar + partido_emp * ptsxempatar;
+    }
 
     /*
      * 4. Diseñe un algoritmo e implemente la función Calcular_definitiva que
      * reciba cinco floats representando las notas (entre 0 y 5) y cinco floats
      * representando los porcentajes (que entre todos deberán sumar 1 y cada uno
-     * estar entre 0 y 1),
-     * y devuelva un float que represente la nota definitiva. Si algo está mal
-     * con los porcentajes o con las notas, retorne -1.
+     * estar entre 0 y 1), y devuelva un float que represente la nota definitiva.
+     * Si algo está mal con los porcentajes o con las notas, retorne -1.
      */
+    public static float Calcular_definitiva(float nota1, float nota2, float nota3, 
+    float nota4, float nota5, 
+    float porcentaje1, float porcentaje2, 
+    float porcentaje3, float porcentaje4, 
+    float porcentaje5) 
+{
+final float NOTA_MIN = 0;
+final float NOTA_MAX = 5;
+
+if (nota1 < NOTA_MIN || nota1 > NOTA_MAX || 
+nota2 < NOTA_MIN || nota2 > NOTA_MAX || 
+nota3 < NOTA_MIN || nota3 > NOTA_MAX || 
+nota4 < NOTA_MIN || nota4 > NOTA_MAX || 
+nota5 < NOTA_MIN || nota5 > NOTA_MAX) {
+return -1;
+}
+
+if (porcentaje1 < 0 || porcentaje1 > 1 || 
+porcentaje2 < 0 || porcentaje2 > 1 || 
+porcentaje3 < 0 || porcentaje3 > 1 || 
+porcentaje4 < 0 || porcentaje4 > 1 || 
+porcentaje5 < 0 || porcentaje5 > 1) {
+return -1;
+}
+
+float sumaPorcentajes = porcentaje1 + porcentaje2 + porcentaje3 + porcentaje4 + porcentaje5;
+if (sumaPorcentajes != 1) {
+return -1;
+}
+
+return (nota1 * porcentaje1) + (nota2 * porcentaje2) + (nota3 * porcentaje3) + 
+(nota4 * porcentaje4) + (nota5 * porcentaje5);
+}
 
 
     /*
@@ -96,6 +156,34 @@ public class App {
      * nota que deberá sacar para ganar si el puntaje mínimo es 3. Si algo
      * está mal con los porcentajes o con las notas, retorne -1.
      */
+    public static float Calcular_para_ganar(float porcentaje1, float porcentaje2, float porcentaje3, 
+    float porcentaje4, float porcentaje5, 
+    float nota1, float nota2, float nota3, 
+    float nota4) {
+    final float nota_minima = 3.0f;
+
+    if (porcentaje1 < 0 || porcentaje1 > 1 || 
+        porcentaje2 < 0 || porcentaje2 > 1 || 
+        porcentaje3 < 0 || porcentaje3 > 1 || 
+        porcentaje4 < 0 || porcentaje4 > 1 || 
+        porcentaje5 < 0 || porcentaje5 > 1) {
+        return -1;
+    }
+
+    float sumaPorcentajes = porcentaje1 + porcentaje2 + porcentaje3 + porcentaje4 + porcentaje5;
+    if (sumaPorcentajes != 1) {
+        return -1;
+    }
+
+    float totalNotas = nota1 * porcentaje1 + nota2 * porcentaje2 + nota3 * porcentaje3 + nota4 * porcentaje4;
+    float notaNecesaria = (nota_minima - totalNotas) / porcentaje5;
+
+    if (notaNecesaria < 0 || notaNecesaria > 5) {
+        return -1;
+    } else {
+        return notaNecesaria;
+    }
+}
 
 
     /*
@@ -112,7 +200,18 @@ public class App {
      * 
      * Si hay algún error, retorne -1.
      */
+    public static float Calcular_salario(int horasNormales, int horasExtrasDiurnas, int horasExtrasNocturnas, float valorHoraNormal) {
 
+        float salarioNormal = horasNormales * valorHoraNormal;
+        float salarioExtraDiurno = horasExtrasDiurnas * valorHoraNormal * (float)1.15;
+        float salarioExtraNocturno = horasExtrasNocturnas * valorHoraNormal * (float)1.35;
+        
+        if (valorHoraNormal <= 0) {
+            return -1;
+        }
+     
+        return salarioNormal + salarioExtraDiurno + salarioExtraNocturno;
+    }
 
     /*
      * 7. Diseñe un algoritmo e implemente la función Calcular_area_triangulo
@@ -125,7 +224,12 @@ public class App {
      * 
      * Si hay algún error, retorne -1.
      */
-
+    public static float Calcular_area_triangulo(float Base, float Altura) {
+        if (Base >= 0 && Altura >= 0) {
+            return (float)0.5 * Base * Altura;
+        }
+        return -1;
+    }
 
     /*
      * 8. Diseñe un algoritmo e implemente la función Calcular_perimetro_cuadrado
@@ -138,7 +242,12 @@ public class App {
      * 
      * Si hay algún error, retorne -1.
      */
-
+    public static float Calcular_perimetro_cuadrado(float Lado) {
+        if (Lado > 0) {
+            return Lado * 4;
+        }
+        return -1;
+    }
 
     /*
      * 9. Diseñe un algoritmo e implemente la función Calcular_volumen_cilindro
@@ -152,7 +261,16 @@ public class App {
      * 
      * Si hay algún error, retorne -1.
      */
+    public static float Calcular_volumen_cilindro(float radio, float altura) {
+        float pi = (float)3.1415927;
 
+
+        if (radio <= 0 || altura <= 0) {
+            return -1;
+        }
+        
+        return pi * (radio * radio) * altura;
+    }
 
     /*
      * 10. Diseñe un algoritmo e implemente la función Calcular_area_circulo
@@ -166,8 +284,15 @@ public class App {
      * 
      * Si hay algún error, retorne -1.
      */
+    public static float Calcular_area_circulo(float radio) {
+        float pi = (float)3.1415927;
 
 
-
+        if (radio <= 0) {
+            return -1;
+        }
+        
+        return pi * (radio * radio);
+    }
 
 }
